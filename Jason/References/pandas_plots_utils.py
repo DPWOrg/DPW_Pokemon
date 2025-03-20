@@ -5,8 +5,9 @@ from typing import (
 
 import pandas as pd
 import seaborn as sns
+from matplotlib import pyplot as plt
 
-from Jason.My_utils.seaborn_plots_utils.matplotlib_plots_utils import (
+from matplotlib_plots_utils import (
     add_data_labels,
     calc_yticks_padding,
     format_axis,
@@ -41,6 +42,8 @@ def pandas_plot(
     if despine_kws:
         sns.despine(**despine_kws)
     ax.get_figure().canvas.draw()
+    # plt.draw()
+
     # Align yticks
     if pad_yticks:
         ax.get_yaxis().set_tick_params(pad=calc_yticks_padding(ax))

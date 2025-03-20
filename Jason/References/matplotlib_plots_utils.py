@@ -8,6 +8,8 @@ from typing import (
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from matplotlib.transforms import IdentityTransform
+from matplotlib.axes import Axes
+
 DEFAULT_SUP_LEGEND_Y_LOCATION = 0.94
 DEFAULT_SUPTITLE_Y_LOCATION = 1
 DEFAULT_SUPTITLE_HA = 'left'
@@ -16,8 +18,26 @@ LEGEND_Y_LOCATION = 1.1
 HEATMAP_ANNOTATION_Y_LOCATION = 1.05
 
 
+# def calc_yticks_padding(ax: Axes) -> float:
+#     return max(T.label.get_window_extent().width for T in ax.get_yaxis().majorTicks) * 0.5
+
+
+
 def calc_yticks_padding(ax: Axes) -> float:
-    return max(T.label.get_window_extent().width for T in ax.get_yaxis().majorTicks) * 0.5
+    # 确保绘图已渲染以获取正确标签尺寸
+    fig = ax.figure
+    fig.canvas.draw()  # 关键：强制渲染
+
+    # 直接获取 y 轴标签的 Text 对象
+    ytick_labels = ax.get_yticklabels()
+
+    # 计算最大标签宽度
+    max_width = max(
+        label.get_window_extent().width
+        for label in ytick_labels
+    )
+
+    return max_width * 0.5  # 按需调整缩放比例
 
 
 def is_legend_empty(legend_handles_labels: Tuple[List, List]) -> bool:
