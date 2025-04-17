@@ -1,6 +1,5 @@
 import pandas as pd
-
-from VITS_fast_finetune.VITS_fast_finetune.venv.Lib import os
+import os
 
 # 加载数据,我直接按我方便的来的
 file_path = 'pokemon.csv'
