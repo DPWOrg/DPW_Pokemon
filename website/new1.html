@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>宝可梦强度竟与这些也有关</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            background-image: url('back.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        h1.page-title {
+            position: fixed;
+            top: 10%;
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            margin: 10px 0;
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+       .main-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+       .sidebar {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: fit-content;
+        }
+
+       .sidebar a {
+            display: block;
+            color: #333;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+       .sidebar a:hover {
+            background-color: #FFD700;
+            color: white;
+        }
+
+       .main-content {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+       .content-section {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+       .content-section h2 {
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+        }
+
+       .content-section p {
+            line-height: 1.6;
+        }
+
+        .chart-container {
+            width: 90%;
+            max-width: 1000px;
+            height:auto;
+            margin: 30px auto;
+        }
+        h1 {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>宝可梦强度竟与这些也有关</h1>
+
+    <h2>Pokémon Stats Correlation Analysis</h2>
+    <div class="chart-container">
+        <canvas id="correlationChart"></canvas>
+    </div>
+
+    <script>
+        Chart.defaults.font.size = 15;
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('correlationChart').getContext('2d');
+            
+            // 数据准备
+            const stats = [
+                'base_egg_steps',
+                'weight_kg',
+                'experience_growth',
+                'base_happiness',
+                'is_legendary',
+                'height_m'
+            ];
+            
+            const correlations = [0.495, 0.457, 0, 0.274, -0.128, -0.073];
+            
+            // 分析说明
+            const analyses = [
+                "base_egg_steps与综合能力的相关性为0.495(~0.5)，显示强正相关",
+                "weight与综合能力的相关性为0.457(~0.45)，显示强正相关",
+                "experience_grouth(m)与综合能力的相关性为0.274(~0.3)，显示中等正相关",
+                "base_happiness与综合能力的相关性为-0.128(~-0.05)，几乎没有相关性",
+                "is_lendary与总能力值相关性为-0.073(~-0.05)，几乎没有相关性",
+                "height与总能力值相关性为0,无相关性"
+            ];
+            
+            // 创建图表
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: stats,
+                    datasets: [{
+                        label: 'Pearson Correlation Coefficient',
+                        data: correlations,
+                        backgroundColor: stats.map((_, i) => 
+                            correlations[i] === null ? 'rgba(200, 200, 200, 0.7)' :
+                            correlations[i] > 0.4 ? 'rgba(75, 192, 192, 0.7)' :
+                            correlations[i] > 0.2 ? 'rgba(54, 162, 235, 0.7)' :
+                            correlations[i] > -0.1 ? 'rgba(255, 159, 64, 0.7)' :
+                            'rgba(255, 99, 132, 0.7)'
+                        ),
+                        borderColor: stats.map((_, i) => 
+                            correlations[i] === null ? 'rgba(200, 200, 200, 1)' :
+                            correlations[i] > 0.4 ? 'rgba(75, 192, 192, 1)' :
+                            correlations[i] > 0.2 ? 'rgba(54, 162, 235, 1)' :
+                            correlations[i] > -0.1 ? 'rgba(255, 159, 64, 1)' :
+                            'rgba(255, 99, 132, 1)'
+                        ),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: -0.1,
+                            max: 0.5,
+                            title: {
+                                display: true,
+                                text: 'Pearson Correlation Coefficient'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Pokémon Stats'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw === null ? 'No data' : context.raw.toFixed(3);
+                                    return `${label}: ${value}`;
+                                },
+                                afterLabel: function(context) {
+                                    return analyses[context.dataIndex];
+                                }
+                            },
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 12,
+                            displayColors: true
+                        },
+                        title: {
+                            display: true,
+                            text: 'Pearson Correlation Analysis of Pokémon Stats',
+                            font: { size: 16 }
+                        },
+                        subtitle: {
+                            display: true,
+                            text: 'Higher values indicate stronger positive correlation',
+                            font: { size: 12 },
+                            padding: { bottom: 20 }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+    <div class="main-container">
+        <div class="sidebar">
+            <a href="shouye.html">🏠 主页</a>
+            <a href="tujian.php">📘 图鉴</a>
+            <a href="#">🤖 智能配队</a>
+        </div>
+        <div class="main-content">
+            <div class="content-section">
+                <h2>Base_egg_steps</h2>
+                <p>孵化步数越多的宝可梦，总能力值越高(可能反应稀有度活进化潜力)</p>
+            </div>
+            <div class="content-section">
+                <h2>Weight(kg)</h2>
+                <p>体重越重的宝可梦综合能力越强(符合"重量级=高战力"的直觉)</p>
+            </div>
+            <div class="content-section">
+                <h2>Experience_growth</h2>
+                <p>经验成长速度较快的宝可梦能力略强(但需注意数值较低，可能非直接因果关系)</p>
+            </div>
+            <div class="content-section">
+                <h2>Base_happiness</h2>
+                <p>初始亲密值与能力值几乎无关</p>
+            </div>
+            <div class="content-section">
+                <h2>Height(m)</h2>
+                <p>身高对能力值无影响</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>Pokémon Stats Correlation Analysis</h2>
+    <div class="chart-container">
+        <canvas id="correlationChart"></canvas>
+    </div>
+
+    
+</body>
+
+</html>    

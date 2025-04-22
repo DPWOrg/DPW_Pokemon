@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <title>宝可梦属性雷达图</title>
+  <style>
+    #radarChart {
+      width: 1000px;
+      height: 600px; 
+      margin: 20px auto 0; 
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+      background-color: #f9f9f9;
+    }
+
+    body::before {
+      content: "";
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .page-header {
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      margin-bottom: 10px; /* 减少标题与图表间距 */
+    }
+
+    .page-header h2 {
+      display: inline-block;
+      color: #333;
+      padding: 10px 20px;
+      margin: 0;
+      border: 3px solid #FFD700;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: fit-content;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #333;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #FFD700;
+      color: white;
+    }
+
+    .chart-container {
+      margin-top: 20px; 
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar">
+    <a href="shouye.html">🏠 主页</a>
+    <a href="tujian.php">📘 图鉴</a>
+    <a href="peidui.php">🤖 智能配队</a>
+  </div>
+  
+  <div class="page-header">
+    <h2>宝可梦属性雷达图</h2>
+  </div>
+  
+  <div class="chart-container">
+    <div id="radarChart"></div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <a href="details.html" style="text-decoration: none; color: #333; font-weight: bold; background-color: rgba(255, 255, 255, 0.8); padding: 10px 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: 2px solid #FFD700;">
+      🔍 查询详细数值信息
+    </a>
+  </div>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script>
+    const chart = echarts.init(document.getElementById('radarChart'));
+
+    const typesData = [
+      { name: "fighting", value: [103.3, 74.4, 75.0, 63.1, 68.9, 72.0] },
+      { name: "dragon", value: [99.5, 85.4, 82.0, 90.3, 82.1, 73.6] },
+      { name: "steel", value: [95.2, 113.5, 67.1, 74.5, 83.0, 60.3] },
+      { name: "dark", value: [91.2, 69.1, 71.5, 73.7, 66.2, 76.0] },
+      { name: "ground", value: [90.7, 85.6, 76.2, 58.6, 63.3, 56.3] },
+      { name: "rock", value: [89.8, 104.5, 67.1, 60.5, 72.7, 52.3] },
+      { name: "ghost", value: [80.5, 79.7, 64.5, 83.0, 78.8, 58.3] },
+      { name: "ice", value: [79.4, 75.9, 75.3, 75.2, 76.3, 65.1] },
+      { name: "fire", value: [79.2, 68.4, 68.4, 89.9, 72.3, 74.0] },
+      { name: "flying", value: [78.0, 66.7, 70.2, 73.9, 69.6, 83.2] },
+      { name: "grass", value: [74.4, 71.7, 65.4, 71.8, 70.6, 57.6] },
+      { name: "normal", value: [74.3, 59.5, 76.2, 58.1, 63.2, 70.3] },
+      { name: "water", value: [72.9, 75.2, 69.0, 73.0, 71.4, 62.6] },
+      { name: "electric", value: [71.3, 64.0, 64.3, 87.3, 70.7, 81.7] },
+      { name: "bug", value: [70.5, 71.2, 56.5, 56.0, 63.5, 62.7] },
+      { name: "psychic", value: [69.5, 74.6, 72.5, 88.9, 85.2, 73.2] },
+      { name: "poison", value: [69.4, 64.7, 62.5, 67.8, 68.1, 65.0] },
+      { name: "fairy", value: [63.0, 69.9, 67.2, 79.5, 84.0, 62.2] }
+    ];
+
+    const labels = ['攻击', '防御', 'HP', '特攻', '特防', '速度'];
+
+    const option = {
+      tooltip: {
+        trigger: 'item',
+        formatter: function (params) {
+          const stat = params.value;
+          return `
+            <strong>${params.seriesName}</strong><br/>
+            攻击: ${stat[0]}<br/>
+            防御: ${stat[1]}<br/>
+            HP: ${stat[2]}<br/>
+            特攻: ${stat[3]}<br/>
+            特防: ${stat[4]}<br/>
+            速度: ${stat[5]}<br/>
+            <em>说明：该属性宝可梦在<strong>${getTopStat(stat)}</strong>方面表现最强。</em>
+          `;
+        }
+      },
+      legend: {
+        type: 'scroll',
+        bottom: 10,
+        data: typesData.map(item => item.name),
+        selectedMode: 'multiple'
+      },
+      radar: {
+        indicator: [
+          { name: '攻击', max: 150 },
+          { name: '防御', max: 150 },
+          { name: 'HP', max: 150 },
+          { name: '特攻', max: 150 },
+          { name: '特防', max: 150 },
+          { name: '速度', max: 150 }
+        ],
+        radius: 280,
+        splitNumber: 5
+      },
+      series: [{
+        type: 'radar',
+        name: '属性数据',
+        data: typesData.map(item => ({
+          name: item.name,
+          value: item.value
+        })),
+        areaStyle: { opacity: 0.15 },
+        lineStyle: { width: 2 }
+      }]
+    };
+
+    chart.setOption(option);
+
+    chart.on('legendselectchanged', function (params) {
+      const selected = params.selected;
+      const clickedName = params.name;
+
+      // 检查是否只有一个被选中
+      const selectedKeys = Object.keys(selected).filter(key => selected[key]);
+
+      if (selectedKeys.length === 1) {
+        // 如果点击的就是当前唯一选中的，就全部选中（恢复）
+        if (selectedKeys[0] === clickedName) {
+          const allSelected = {};
+          typesData.forEach(item => {
+            allSelected[item.name] = true;
+          });
+          chart.setOption({
+            legend: { selected: allSelected }
+          });
+        } else {
+          // 保留点击的，隐藏其他
+          const onlyOne = {};
+          typesData.forEach(item => {
+            onlyOne[item.name] = item.name === clickedName;
+          });
+          chart.setOption({
+            legend: { selected: onlyOne }
+          });
+        }
+      } else {
+        // 只保留当前点击的
+        const onlyOne = {};
+        typesData.forEach(item => {
+          onlyOne[item.name] = item.name === clickedName;
+        });
+        chart.setOption({
+          legend: { selected: onlyOne }
+        });
+      }
+    });
+
+    function getTopStat(stats) {
+      let max = -Infinity, index = -1;
+      stats.forEach((val, i) => {
+        if (val > max) {
+          max = val;
+          index = i;
+        }
+      });
+      return labels[index];
+    }
+  </script>
+
+  <div>
+
+  </div>
+</body>
+
+</html>
+
+
+
+
+
+
