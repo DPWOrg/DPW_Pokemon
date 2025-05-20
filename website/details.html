@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宝可梦属性数据分析</title>
+  <style>
+    :root {
+      --primary-color: #FFD700;
+      --secondary-color: #333;
+      --dark-bg: #444;
+      --light-bg: #f4f4f4;
+      --white: #fff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--light-bg);
+      color: var(--secondary-color);
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    nav {
+      background-color: var(--dark-bg);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    nav ul li a {
+      color: var(--white);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 40px;
+      background-color: var(--white);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    section h2 {
+      color: var(--secondary-color);
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .chart-container {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .chart-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+    }
+
+    footer {
+      background-color: var(--secondary-color);
+      color: var(--white);
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .tooltip {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 1px solid #aaa;
+      padding: 8px 12px;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+      display: none;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      font-size: 14px;
+      z-index: 1000;
+      max-width: 300px;
+    }
+    .sidebar {
+      position: fixed;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: fit-content;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #333;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #FFD700;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      section {
+        padding: 15px;
+      }
+      
+      .chart-container img {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>宝可梦属性数据分析</h1>
+  </header>
+  <div class="sidebar">
+    <a href="shouye.html">🏠 主页</a>
+    <a href="tujian.php">📘 图鉴</a>
+    <a href="peidui.php">🤖 智能配队</a>
+  </div>
+  
+  <nav>
+    <ul>
+      <li><a href="#averageAttack">平均攻击</a></li>
+      <li><a href="#averageDefense">平均防御</a></li>
+      <li><a href="#averageHP">平均HP</a></li>
+      <li><a href="#averageSpAttack">平均特攻</a></li>
+      <li><a href="#averageSpDefense">平均特防</a></li>
+      <li><a href="#averageSpeed">平均速度</a></li>
+      <li><a href="#numberOfPokemon">宝可梦数量</a></li>
+      <li><a href="#averageTotalStats">平均总种族值</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+
+      <section id="averageAttack">
+        <h2>Average Attack by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_Attack.png" alt="Average Attack by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '格斗属性平均攻击值为103.3')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均攻击值，其中格斗属性攻击值最高</p>
+      </section>
+  
+      <section id="averageDefense">
+        <h2>Average Defense by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_Defense.png" alt="Average Defense by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '钢属性平均防御值为113.5')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均防御值，钢属性防御值最高</p>
+      </section>
+  
+      <section id="averageHP">
+        <h2>Average HP by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_HP.png" alt="Average HP by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '龙属性平均HP值为82.0')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均HP值，龙属性HP值相对较高</p>
+      </section>
+  
+      <section id="averageSpAttack">
+        <h2>Average Sp. Atk by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_Sp_Attack.png" alt="Average Sp. Atk by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '龙属性平均特殊攻击值为90.3')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均特殊攻击值，龙属性特殊攻击表现突出</p>
+      </section>
+  
+      <section id="averageSpDefense">
+        <h2>Average Sp. Def by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_Sp_Defense.png" alt="Average Sp. Def by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '超能力属性平均特殊防御值为85.2')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均特殊防御值，超能力属性特殊防御较高</p>
+      </section>
+  
+      <section id="averageSpeed">
+        <h2>Average Speed by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_Speed.png" alt="Average Speed by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '飞行属性平均速度值为83.2')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均速度值，飞行属性速度较快</p>
+      </section>
+  
+      <section id="numberOfPokemon">
+        <h2>Number of Pokemon by Type</h2>
+        <div class="chart-container">
+          <img src="img/number_of_pokemon.png" alt="Number of Pokemon by Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '水属性宝可梦数量为131')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同属性宝可梦的数量，水属性宝可梦数量最多</p>
+      </section>
+  
+      <section id="averageTotalStats">
+        <h2>Average Total Stats by Pokemon Type</h2>
+        <div class="chart-container">
+          <img src="img/average_total_stats.png" alt="Average Total Stats by Pokemon Type" width="800" height="600"
+            onmouseover="showTooltip(event, this, '龙属性平均总种族值为513.0')" onmouseout="hideTooltip()">
+        </div>
+        <p>该图表展示了不同宝可梦属性的平均总种族值，龙属性的平均总种族值最高。</p>
+      </section>
+  </main>
+
+  <footer>
+    <p>版权所有 &copy; 2025 宝可梦数据分析网站 | 数据来源：宝可梦官方及相关研究</p>
+  </footer>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script>
+    const tooltip = document.getElementById("tooltip");
+
+    function showTooltip(event, element, text) {
+      tooltip.textContent = text;
+      
+      const rect = element.getBoundingClientRect();
+      const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      tooltip.style.left = (rect.left + scrollLeft + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = (rect.top + scrollTop - tooltip.offsetHeight - 10) + 'px';
+      tooltip.style.display = 'block';
+    }
+
+    function hideTooltip() {
+      tooltip.style.display = 'none';
+    }
+    
+    // 平滑滚动
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
+
+  
+  
+  
+  
+</body>
+
+</html>
