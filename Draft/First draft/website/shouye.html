@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Intelligent Teaming Platform</title>
+    <style>
+        body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    background-image: url('back.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 1vh; 
+    position: relative;
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    padding: 20px;
+    margin: 10px 0;
+    border: 3px solid #FFD700;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.main-container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.sidebar {
+    position: fixed;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+}
+
+.sidebar a {
+    display: block;
+    color: #333;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #FFD700;
+    color: white;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.news-section {
+    margin-top: 20px;
+}
+
+.news-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.news-section li {
+    margin-bottom: 5px;
+}
+
+.news-section a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.news-section a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="page-title">🎮 Pokémon Intelligent Teaming Platform</h1>
+    </header>
+    <main class="main-container">
+        <div class="sidebar">
+            <a href="shouye.html">🏠 Home</a>
+            <a href="tujian.php">📘 Pokédex</a>
+            <a href="peidui.php">🤖 Intelligent Team Building</a>
+        </div>
+        <section class="main-content">
+            <h2>Welcome to the world of Pokémon</h2>
+            <p>Whether you're facing a tough opponent in a dojo challenge or struggling in a heated league match, we're here to be your reliable resource</p>.
+            <p>Based on your opponent's lineup, the platform will use algorithms to create winning matches</p>.
+            <p>The Pokémon that have been with you on your adventures will come back with the best combinations to help you break through and win</p>.
+            <div class="news-section">
+                <h2>Pokémon related fun facts</h2>
+                <ul>
+                    <li><a href="new1.html">Factors related to Pokémon strength that you wouldn't have thought of</a></li>
+                    <li><a href="new2.html">Effect of Pokémon Attributes on Racial Values</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
