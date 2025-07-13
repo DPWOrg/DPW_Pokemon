@@ -43,7 +43,9 @@ def calculate_win_rate(self, team: List[int], enemy_team: List[int], num_simulat
 
 ### **3.1 Fitness Function**
 **Formula**:  
-$$\text{Fitness} = 0.4 \times \text{TypeScore} + 0.3 \times (\mu_{\text{stats}} - 0.5\sigma_{\text{stats}}) + 0.3 \times \text{ModelScore}$$ 
+
+$$\text{Fitness} = 0.4 \times \text{TypeScore} + 0.3 \times (\mu_{\text{stats}} - 0.5\sigma_{\text{stats}}) + 0.3 \times \text{ModelScore}$$
+
 **Code Implementation**:  
 ```python
 def _fitness(self, team: List[int]) -> float:
@@ -162,7 +164,9 @@ class TeamEvaluator(torch.nn.Module):
 ## **5. Key Formulas**
 
 ### **5.1 Type Effectiveness Matrix**
+
 $$M_{A,D} = \prod_{t_A \in A} \prod_{t_D \in D} \text{Effectiveness}(t_A, t_D)$$
+
 - $t_A$: Attacker’s type(s).  
 - $t_D$: Defender’s type(s).  
 - Example: Fire vs. Grass/Poison = \( 2.0 \times 2.0 = 4.0 \).  
