@@ -5,10 +5,10 @@
 ## **1. Win Rate Analysis Module**
 
 ### **1.1 Monte Carlo Simulation**
-**Formula**:  
-\[
-\text{WinRate} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\text{TeamScore}_i > \text{EnemyScore}_i)
-\]  
+**Formula**: 
+
+$$\text{WinRate} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\text{TeamScore}_i > \text{EnemyScore}_i)$$
+
 **Code Implementation**:  
 ```python
 def calculate_win_rate(self, team: List[int], enemy_team: List[int], num_simulations=1000) -> float:
@@ -43,9 +43,7 @@ def calculate_win_rate(self, team: List[int], enemy_team: List[int], num_simulat
 
 ### **3.1 Fitness Function**
 **Formula**:  
-\[
-\text{Fitness} = 0.4 \times \text{TypeScore} + 0.3 \times (\mu_{\text{stats}} - 0.5\sigma_{\text{stats}}) + 0.3 \times \text{ModelScore}
-\]  
+$$\text{Fitness} = 0.4 \times \text{TypeScore} + 0.3 \times (\mu_{\text{stats}} - 0.5\sigma_{\text{stats}}) + 0.3 \times \text{ModelScore}$$ 
 **Code Implementation**:  
 ```python
 def _fitness(self, team: List[int]) -> float:
@@ -164,17 +162,13 @@ class TeamEvaluator(torch.nn.Module):
 ## **5. Key Formulas**
 
 ### **5.1 Type Effectiveness Matrix**
-\[
-M_{A,D} = \prod_{t_A \in A} \prod_{t_D \in D} \text{Effectiveness}(t_A, t_D)
-\]  
-- \( t_A \): Attacker’s type(s).  
-- \( t_D \): Defender’s type(s).  
+$$M_{A,D} = \prod_{t_A \in A} \prod_{t_D \in D} \text{Effectiveness}(t_A, t_D)$$
+- $t_A$: Attacker’s type(s).  
+- $t_D$: Defender’s type(s).  
 - Example: Fire vs. Grass/Poison = \( 2.0 \times 2.0 = 4.0 \).  
 
 ### **5.2 Stat Balance Metric**
-\[
-\text{Balance} = \mu_{\text{stats}} - 0.5 \times \sigma_{\text{stats}}
-\]  
+$$\text{Balance} = \mu_{\text{stats}} - 0.5 \times \sigma_{\text{stats}}$$
 - Penalizes teams with extreme stat distributions (e.g., all high Attack, low Defense).  
 
 ---
