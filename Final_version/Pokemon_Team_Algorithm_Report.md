@@ -152,4 +152,4 @@ with Pool(processes=4) as pool:
     scores = pool.map(self._fitness, population)
 ```
 
-完整实现请参考：[./Test3.py]
+完整实现请参考：Test3.py
